@@ -32,4 +32,28 @@ async function getOneProduct(req, res, id){
     
 }
 
-module.exports = {getProducts, getOneProduct}
+async function createProduct(req, res){
+    try {
+        const product = {
+            title: "Testing product",
+            description: "test product"
+        }
+        let body = ""
+        req.on("data", (chunk) => {
+            body += chunk.toString()
+        })  
+
+        req.on("end", () => {
+            console.log(body);
+        })
+        const newProduct = await productModel.createProduct(product)
+        res.writeHead(200, {'Content-Type' : "application/json"});
+        res.end(JSON.stringify(newProduct))
+
+    } catch (error) {
+        console.log(error)
+        res.end("Error Occured" + error)
+    }
+}
+
+module.exports = {getProducts, getOneProduct, createProduct}
