@@ -1,78 +1,53 @@
-const productModel = require("../models/productModel");
+const Product = require("../models/productModel");
 const { getPostData } = require("../utils")
 // @GET All products 
 // GET /api/products
-async function getProducts(req, res){
-    try {
-        const products = await productModel.findAll()
-        
-        res.writeHead(200, "OK", {"Content-Type" : "application/json"})
-        res.end(JSON.stringify(products))
-
-    } catch (error) {
-        console.log(error)
-    }
+function getProducts(req, res){
+    Product.find().then((message) => {
+        console.log(message);
+        res.writeHead(200, {"Content-Type" : "application/json"})
+        res.end(JSON.stringify(message))
+    })
 }
-// GET /api/product/id
-// GET product by id
-async function getOneProduct(req, res, id){
-    try {
-        const product = await productModel.findById(id);
-        if (!product){
 
-            res.writeHead(404, "Not Found", {"Content-Type" : "application/json"})
-            res.end(JSON.stringify({message: "Product not found"}))
-
-        }else{
-
-            res.writeHead(200, "OK", {"Content-Type" : "application/json"})
-            res.end(JSON.stringify(product))
-        }
-        
-    } catch (error) {
-      console.log(error)  
-      res.end()
-    }
-    
-}
 // create product 
 // POST /api/products
 async function createProduct(req, res){
-    try {
+   try {
+        const data = await getPostData(req);
+        console.log(data);
+        const {title, description, price, _id} = JSON.parse(data)
+        const newProduct = new Product({
+            _id : _id,
+            title: title,
+            description: description,
+            price: price
+        })
+        newProduct.save((error) => {
+            if(error) throw error
+            
+            console.log("Product added")
+            res.writeHead(200, {"Content-Type": "application/json"})
+            res.end(JSON.stringify(newProduct))
+        })
 
-        const product = await getPostData(req)
-        const newProduct = await productModel.createProduct(JSON.parse(product))
-
-        res.writeHead(201, "created", {"Content-Type" : "application/json"})
-        res.end(JSON.stringify(newProduct))
-    } catch (error) {
-        console.log(error)
-        res.end("Error Occured" + error)
-    }
+   } catch (error) {
+       
+   }
 }
 
-async function updateProduct(req, res, id){
+async function updateProduct(req, res, title){
     try {
-        const product = await productModel.findById(id);
-        if (!product){
+        const postData = await getPostData(req)
+        
+        const updProduct = await Product
+                .findOneAndUpdate({title : title},JSON.parse(postData),
+                {new: true})
+        
 
-            res.writeHead(404, "Not Found", {"Content-Type" : "application/json"})
-            res.end(JSON.stringify({message: "Product not found"}))
-
-        }else{
-            const data = await getPostData(req)
-            const {firstName, lastName, gender} = JSON.parse(data)
-
-            const productData = {
-                firstName : firstName || product.firstName,
-                lastName : lastName || product.lastName,
-                gender : gender || product.gender,
-            }
-            const updProduct = await productModel.update(productData, id)
-    
-            res.writeHead(200, "OK", {"Content-Type" : "application/json"})
-            res.end(JSON.stringify(updProduct));
-        }
+        res.writeHead(200, "OK", {"Content-Type" : "application/json"})
+        res.end(JSON.stringify(updProduct));
+        
         
     } catch (error) {
       console.log(error)  
@@ -82,4 +57,4 @@ async function updateProduct(req, res, id){
 }
 
 
-module.exports = {getProducts, getOneProduct, createProduct, updateProduct}
+module.exports = {getProducts, createProduct, updateProduct}

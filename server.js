@@ -1,5 +1,7 @@
 const http = require("http");
 const { getProducts, getOneProduct, createProduct, updateProduct} = require("./controllers/productController");
+const db = require("./db")
+
 
 const server = http.createServer((req, res) => {
    
@@ -18,10 +20,9 @@ const server = http.createServer((req, res) => {
         
         createProduct(req, res)
     }
-    else if(req.url.match(/\/api\/products\/([0-9]+)/) && req.method === "PUT"){
-        const id = req.url.split("/")[3];
-        console.log(id)
-        updateProduct(req, res, id);
+    else if(req.url.match(/\/api\/products\/([aA-zZ]+)/) && req.method === "PUT"){
+        const title = req.url.split("/")[3];
+        updateProduct(req, res, title);
     }
     else{
         res.writeHead(404, "Not Found", {"Content-Type": "text/html"});
