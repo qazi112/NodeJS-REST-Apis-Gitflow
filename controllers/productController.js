@@ -43,12 +43,13 @@ async function createProduct(req, res){
             body += chunk.toString()
         })  
 
-        req.on("end", () => {
-            console.log(body);
+        req.on("end", async() => {
+            
+            const newProduct = await productModel.createProduct(JSON.parse(body))
+            res.writeHead(200, {'Content-Type' : "application/json"});
+            res.end(JSON.stringify(newProduct))
         })
-        const newProduct = await productModel.createProduct(product)
-        res.writeHead(200, {'Content-Type' : "application/json"});
-        res.end(JSON.stringify(newProduct))
+
 
     } catch (error) {
         console.log(error)
