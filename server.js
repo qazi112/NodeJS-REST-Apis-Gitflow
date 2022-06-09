@@ -1,16 +1,18 @@
 const http = require("http");
-const products = require("./data/products")
+const { getProducts, getOneProduct } = require("./controllers/productController");
 
 const server = http.createServer((req, res) => {
-    console.log(req);
+   
     if (req.url === "/api/products" && req.method == "GET"){
-        const options = {
-            "Content-Type" : "application/json" 
-        }
-        res.writeHead(200,options)
-        res.write(JSON.stringify(products))
-        res.end()
-    }else{
+        getProducts(req, res);
+        
+    }
+    else if(req.url.match(/\/api\/products\/([0-9]+)/)){
+        const id = req.url.split("/")[3];
+        console.log(id)
+        getOneProduct(req, res, id);
+    }
+    else{
         res.writeHead(404, "Not Found", {"Content-Type": "text/html"});
         res.end("Not Found")
     }
