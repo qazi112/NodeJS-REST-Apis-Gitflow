@@ -1,4 +1,5 @@
 const productModel = require("../models/productModel");
+const { getPostData } = require("../utils")
 
 async function getProducts(req, res){
     try {
@@ -34,23 +35,12 @@ async function getOneProduct(req, res, id){
 
 async function createProduct(req, res){
     try {
-        const product = {
-            title: "Testing product",
-            description: "test product"
-        }
-        let body = ""
-        req.on("data", (chunk) => {
-            body += chunk.toString()
-        })  
 
-        req.on("end", async() => {
-            
-            const newProduct = await productModel.createProduct(JSON.parse(body))
-            res.writeHead(200, {'Content-Type' : "application/json"});
-            res.end(JSON.stringify(newProduct))
-        })
+        const product = await getPostData(req)
+        const newProduct = await productModel.createProduct(JSON.parse(product))
 
-
+        res.writeHead(200, "OK", {"Content-Type" : "application/json"})
+        res.end(JSON.stringify(newProduct))
     } catch (error) {
         console.log(error)
         res.end("Error Occured" + error)
