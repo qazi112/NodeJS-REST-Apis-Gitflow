@@ -1,39 +1,15 @@
 [
     {
-        "id": 1,
-        "firstName": "Qazi",
-        "lastName": "Arsalan",
-        "gender": "male",
-        "age": 22,
-        "address": {
-            "streetAddress": "101",
-            "city": "San Diego",
-            "state": "CA"
-        },
-        "phoneNumbers": [
-            {
-                "type": "home",
-                "number": "7349282382"
-            }
-        ]
+        "id": "1",
+        "firstName": "Qazi Adan",
+        "lastName": "Hidayat",
+        "gender": "male"
     },
     {
-        "id": 2,
-        "firstName": "Joe",
-        "lastName": "Jackson",
-        "gender": "male",
-        "age": 28,
-        "address": {
-            "streetAddress": "101",
-            "city": "San Diego",
-            "state": "CA"
-        },
-        "phoneNumbers": [
-            {
-                "type": "home",
-                "number": "7349282382"
-            }
-        ]
+        "id": "2",
+        "firstName": "Qazi Shah",
+        "lastName": "Zahir",
+        "gender": "male"
     },
     {
         "id": 3,
@@ -54,13 +30,9 @@
         ]
     },
     {
-        "id": "2d5e0fcd-d7a9-472e-a6a2-82bd66750b1b",
-        "name": "Testing",
-        "description": "Testing"
-    },
-    {
-        "id": "4fc1b7cb-c4ea-4ac0-a21a-483763351909",
-        "name": "Testing",
-        "description": "xyz"
+        "id": "e856bbed-ac4c-4e5d-b687-2fe5e4c953c8",
+        "firstName": "Qazi Wasif",
+        "lastName": "Shah",
+        "gender": "male"
     }
 ]

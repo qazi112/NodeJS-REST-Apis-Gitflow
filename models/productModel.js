@@ -15,6 +15,7 @@ function findById(id){
         const product = products.filter((value)=>{
             return value.id == id
         })
+        console.log(product)
         resolve(product[0])
     })
 }
@@ -28,4 +29,14 @@ function createProduct(product){
         resolve(newProduct);
     });
 }
-module.exports = { findAll, findById, createProduct }
+
+function update(product, id){
+    return new Promise((resolve, reject) => {
+        
+        const index = products.findIndex((p) => p.id == id)
+        products[index] = {id, ...product};
+        writeDataToFile("./data/products.json", products)
+        resolve(products[index])
+    });
+}
+module.exports = { findAll, findById, createProduct, update }
